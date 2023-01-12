@@ -1,16 +1,20 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
+import Paper from "@mui/material/Paper";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import CardActions from "@mui/material/CardActions";
+import Typography from "@mui/material/Typography";
+import AddToCartButton from "./AddToCartButton";
 
 export default function SelectedProduct(props) {
   const { onClose, selectedValue, open, productList } = props;
 
+  // filtering particular product
   const product = productList.filter((prod) => prod.id === selectedValue);
-  console.log("selected product:", product);
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -19,15 +23,30 @@ export default function SelectedProduct(props) {
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Product View</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {product.map((prod) => (
-          <ListItem disableGutters>
-            <ListItemText primary={prod.title} />
-          </ListItem>
-        ))}
+      {product.map((prod) => (
+        <Paper>
+          <Card>
+            <CardMedia
+              component="img"
+              height="140px"
+              image={prod.image}
+              alt={prod.title}
+            />
 
-        {selectedValue}
-      </List>
+            <CardContent sx={{ height: "100px", width: "400px" }}>
+              <Typography gutterBottom variant="h6" component="div">
+                {prod.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {prod.description}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <AddToCartButton product={product} {...props} />
+            </CardActions>
+          </Card>
+        </Paper>
+      ))}
     </Dialog>
   );
 }
@@ -37,34 +56,3 @@ SelectedProduct.propTypes = {
   open: PropTypes.bool.isRequired,
   selectedValue: PropTypes.string.isRequired,
 };
-
-// export default function SelectedProductDemo() {
-//   const [open, setOpen] = React.useState(false);
-//   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
-
-//   const handleClose = (value) => {
-//     setOpen(false);
-//     setSelectedValue(value);
-//   };
-
-//   return (
-//     <div>
-//       <Typography variant="subtitle1" component="div">
-//         Selected: {selectedValue}
-//       </Typography>
-//       <br />
-//       <Button variant="outlined" onClick={handleClickOpen}>
-//         Open simple dialog
-//       </Button>
-//       <SelectedProduct
-//         selectedValue={selectedValue}
-//         open={open}
-//         onClose={handleClose}
-//       />
-//     </div>
-//   );
-// }

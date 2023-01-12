@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -11,27 +11,22 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
 export default function CartView(props) {
-  const { cartList } = props;
-  useEffect(() => {
-    console.log(cartList);
-  });
+  const { cartList, setShowCart } = props;
   const setProductQuantity = (num, prodId) => {
     const foundIndex = cartList.products.findIndex(
       (x) => x.productId === prodId
     );
-    console.log("found index:", cartList.products[foundIndex]);
     const foundProduct = cartList.products[foundIndex];
 
+    // updating qty in clicked product only
     if (foundIndex >= 0) {
       cartList.products[foundIndex] = {
         ...foundProduct,
-        quantity: foundProduct.quantity + num,
+        quantity: foundProduct.quantity + num, // num id +1 and -1 as per increment and decrement call
       };
     }
-    console.log("in cartt:", cartList);
   };
 
-  console.log(" out cartt:", cartList);
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12}>
@@ -92,6 +87,15 @@ export default function CartView(props) {
             </>
           ))}
         </List>
+      </Grid>
+      <Grid item>
+        <Button
+          variant="contained"
+          color="inherit"
+          onClick={() => setShowCart(false)}
+        >
+          Back
+        </Button>
       </Grid>
     </Grid>
   );

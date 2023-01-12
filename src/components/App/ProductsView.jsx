@@ -10,18 +10,19 @@ import AddToCartButton from "./AddToCartButton";
 
 export default function ProductsView(props) {
   const { productList } = props;
-  console.log("productlist:", productList);
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(-0);
+  const [selectedValue, setSelectedValue] = React.useState(0); // selected product id value
+  // dialog open
   const handleClickOpen = (id) => {
     setOpen(true);
     setSelectedValue(id);
   };
-
+  // dialog close
   const handleClose = (value) => {
     setOpen(false);
     setSelectedValue(value);
   };
+
   return (
     <Grid container spacing={2}>
       {productList.map((product) => (
