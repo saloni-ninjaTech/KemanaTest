@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -12,16 +12,26 @@ import Typography from "@mui/material/Typography";
 
 export default function CartView(props) {
   const { cartList } = props;
-
-  // TODO: update logic
+  useEffect(() => {
+    console.log(cartList);
+  });
   const setProductQuantity = (num, prodId) => {
-    cartList.products.map((prod) => {
-      return prod.productId === prodId
-        ? { ...prod, quantity: prod.quantity + num }
-        : "";
-    });
-    console.log("inc dec cart: ", cartList);
+    const foundIndex = cartList.products.findIndex(
+      (x) => x.productId === prodId
+    );
+    console.log("found index:", cartList.products[foundIndex]);
+    const foundProduct = cartList.products[foundIndex];
+
+    if (foundIndex >= 0) {
+      cartList.products[foundIndex] = {
+        ...foundProduct,
+        quantity: foundProduct.quantity + num,
+      };
+    }
+    console.log("in cartt:", cartList);
   };
+
+  console.log(" out cartt:", cartList);
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12}>

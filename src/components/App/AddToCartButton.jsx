@@ -5,26 +5,27 @@ export default function AddToCartButton(props) {
   const { product, cartList } = props;
   const AddToCart = (product) => {
     let newProduct = {
-      price: product.price,
       productId: product.id,
-      quantity: 1,
       title: product.title,
+      price: product.price,
+      quantity: 1,
     };
-    let isExist = cartList.products.filter(
-      (prod) => prod.productId === product.id
-    );
 
-    if (isExist.length() > 0) {
-      isExist.map((cart) =>
-        cart.map((prod) => {
-          return prod.productId === product.id
-            ? { ...prod, quantity: prod.quantity + 1 }
-            : cart.push(newProduct);
-        })
-      );
-    } else {
+    const foundIndex = cartList.products.findIndex(
+      (x) => x.productId === product.id
+    );
+    console.log("found index:", cartList.products[foundIndex]);
+    const foundProduct = cartList.products[foundIndex];
+
+    if (foundIndex < 0) {
       cartList.products.push(newProduct);
+    } else {
+      cartList.products[foundIndex] = {
+        ...foundProduct,
+        quantity: foundProduct.quantity + 1,
+      };
     }
+    console.log("cartt:", cartList);
   };
   return (
     <Button
