@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import { AppContext } from "./context";
 
 export default function AddToCartButton(props) {
-  const { cartList, setShowCart } = useContext(AppContext);
+  const { cartList, setCount } = useContext(AppContext);
   const { product } = props;
   const AddToCart = (product) => {
     let newProduct = {
@@ -37,7 +37,7 @@ export default function AddToCartButton(props) {
       color="primary"
       onClick={() => {
         AddToCart(product);
-        setShowCart(true);
+        setCount((count) => count + 1);
       }}
     >
       Add to Cart

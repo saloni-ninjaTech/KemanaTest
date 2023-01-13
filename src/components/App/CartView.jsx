@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -8,58 +8,99 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { AppContext } from "./context";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 
 export default function CartView() {
   const { cartList, setShowCart } = useContext(AppContext);
+
+  const [cartState, setCartState] = useState(cartList);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalProdPrice, setTotalProdPrice] = useState(0);
+  const [totalTax, setTotalTax] = useState(0);
+  const [pay, setPay] = useState(false);
+
+  const calculateTotalPrice = (cart) => {
+    let tax = 1.23;
+    let taxTotal = 0;
+    let prodTotal = 0; // all product total
+    let prodEachTotal = 0; // product total
+    cart.products.map((prod) => {
+      let prodTax = 0; // product's tax total
+      prodTax = (prod.price * prod.quantity * tax) / 100;
+      taxTotal += prodTax;
+      prodTotal += prod.price * prod.quantity + prodTax;
+      prodEachTotal += prod.price * prod.quantity;
+    });
+    setTotalTax(taxTotal);
+    setTotalPrice(prodTotal);
+    setTotalProdPrice(prodEachTotal);
+  };
+
+  useEffect(() => {
+    calculateTotalPrice(cartState);
+  }, [cartState]);
+
   const setProductQuantity = (num, prodId) => {
-    const foundIndex = cartList.products.findIndex(
+    const foundIndex = cartState.products.findIndex(
       (x) => x.productId === prodId
     );
-    const foundProduct = cartList.products[foundIndex];
+    const foundProduct = cartState.products[foundIndex];
 
     // updating qty in clicked product only
     if (foundIndex >= 0) {
-      cartList.products[foundIndex] = {
+      cartState.products[foundIndex] = {
         ...foundProduct,
         quantity: foundProduct.quantity + num, // num id +1 and -1 as per increment and decrement call
       };
+      setCartState({ ...cartState });
     }
-    console.log("cart:", cartList);
   };
 
-  return (
-    <Grid container justifyContent="center" alignItems="center">
+  return !pay ? (
+    <Grid container justifyContent="center" alignItems="center" spacing={2}>
       <Grid item xs={12}>
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          {cartList.products.map((product) => (
+          {cartState.products?.map((product) => (
             <>
               <ListItem
                 alignItems="flex-start"
                 secondaryAction={
-                  <ButtonGroup
-                    size="small"
-                    aria-label="small outlined button group"
-                  >
-                    <Button
-                      onClick={() => setProductQuantity(1, product.productId)}
-                    >
-                      +
-                    </Button>
-                    {product.quantity && (
-                      <Button disabled>{product.quantity}</Button>
-                    )}
-                    {product.quantity && (
-                      <Button
-                        onClick={() =>
-                          setProductQuantity(-1, product.productId)
-                        }
+                  <Grid container spacing={2} justifyContent="space-between">
+                    <Grid item>
+                      <ButtonGroup
+                        size="small"
+                        aria-label="small outlined button group"
                       >
-                        -
-                      </Button>
-                    )}
-                  </ButtonGroup>
+                        <Button
+                          onClick={() => {
+                            setProductQuantity(1, product.productId);
+                          }}
+                        >
+                          +
+                        </Button>
+                        {product.quantity && (
+                          <Button disabled>{product.quantity}</Button>
+                        )}
+                        {product.quantity && (
+                          <Button
+                            onClick={() => {
+                              setProductQuantity(-1, product.productId);
+                            }}
+                          >
+                            -
+                          </Button>
+                        )}
+                      </ButtonGroup>
+                    </Grid>
+                    <Grid item>
+                      <Typography>
+                        INR: {product.price * product.quantity}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 }
               >
                 <ListItemAvatar>
@@ -79,7 +120,7 @@ export default function CartView() {
                         variant="body2"
                         color="text.primary"
                       >
-                        Quantity: {product.quantity}
+                        INR: {product.price}
                       </Typography>
                     </React.Fragment>
                   }
@@ -98,6 +139,72 @@ export default function CartView() {
         >
           Back
         </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Paper>
+          <Grid
+            container
+            pl="15px"
+            pr="15px"
+            spacing={1}
+            justifyContent="space-between"
+          >
+            <Grid item>
+              <Typography component="h6">Total Tax:</Typography>
+            </Grid>
+            <Grid item>
+              <Typography>INR: {totalTax.toFixed(2)}</Typography>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            pl="15px"
+            pr="15px"
+            spacing={1}
+            justifyContent="space-between"
+          >
+            <Grid item>
+              <Typography component="h6">Total Product Price:</Typography>
+            </Grid>
+            <Grid item>
+              <Typography>INR: {totalProdPrice.toFixed(2)}</Typography>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            pl="15px"
+            pr="15px"
+            spacing={1}
+            justifyContent="space-between"
+          >
+            <Grid item>
+              <Typography component="h6">Total Payable Price:</Typography>
+            </Grid>
+            <Grid item>
+              <Typography>INR: {totalPrice.toFixed(2)}</Typography>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+      <Grid item>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => setPay(true)}
+        >
+          Proceed To Pay
+        </Button>
+      </Grid>
+    </Grid>
+  ) : (
+    <Grid container justifyContent="center" alignItems="center">
+      <Grid item>
+        <Typography>
+          <CheckCircleOutlineRoundedIcon color="success" fontSize="large" />
+          Order Placed!
+        </Typography>
       </Grid>
     </Grid>
   );

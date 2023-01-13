@@ -8,10 +8,13 @@ import { AppContext } from "./context";
 
 function App(props) {
   const [showCart, setShowCart] = useState(false);
+  const [count, setCount] = useState(props.cartList.products.length);
 
   return (
     <div className="App">
-      <AppContext.Provider value={{ ...props, showCart, setShowCart }}>
+      <AppContext.Provider
+        value={{ ...props, showCart, setShowCart, count, setCount }}
+      >
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Header />
