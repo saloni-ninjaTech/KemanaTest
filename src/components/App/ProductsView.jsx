@@ -47,6 +47,9 @@ export default function ProductsView() {
                 <Typography variant="body2" color="text.secondary">
                   {product.description}
                 </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  INR: {product.price}
+                </Typography>
               </CardContent>
             </CardActionArea>
             <CardActions>
