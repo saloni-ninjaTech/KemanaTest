@@ -8,6 +8,7 @@ import { CardActionArea, CardActions } from "@mui/material";
 import SelectedProduct from "./SelectedProduct";
 import AddToCartButton from "./AddToCartButton";
 import { AppContext } from "./context";
+import AltImg from "../../_assets/images/alt.png";
 
 export default function ProductsView() {
   const { productList } = React.useContext(AppContext);
@@ -34,7 +35,9 @@ export default function ProductsView() {
                 component="img"
                 height="140px"
                 image={product.image}
-                alt={product.title}
+                onError={(e) => {
+                  e.target.src = AltImg;
+                }}
               />
 
               <CardContent sx={{ height: "100px" }}>

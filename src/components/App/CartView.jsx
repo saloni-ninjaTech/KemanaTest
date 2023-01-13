@@ -12,9 +12,10 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { AppContext } from "./context";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import AltImg from "../../_assets/images/alt.png";
 
 export default function CartView() {
-  const { cartList, setShowCart } = useContext(AppContext);
+  const { cartList, setShowCart, setCount } = useContext(AppContext);
 
   const [cartState, setCartState] = useState(cartList);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -65,68 +66,76 @@ export default function CartView() {
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {cartState.products?.map((product) => (
             <>
-              <ListItem
-                alignItems="flex-start"
-                secondaryAction={
-                  <Grid container spacing={2} justifyContent="space-between">
-                    <Grid item>
-                      <ButtonGroup
-                        size="small"
-                        aria-label="small outlined button group"
+              {product.quantity > 0 && (
+                <>
+                  <ListItem
+                    alignItems="flex-start"
+                    secondaryAction={
+                      <Grid
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
                       >
-                        <Button
-                          onClick={() => {
-                            setProductQuantity(1, product.productId);
-                          }}
-                        >
-                          +
-                        </Button>
-                        {product.quantity && (
-                          <Button disabled>{product.quantity}</Button>
-                        )}
-                        {product.quantity && (
-                          <Button
-                            onClick={() => {
-                              setProductQuantity(-1, product.productId);
-                            }}
+                        <Grid item>
+                          <ButtonGroup
+                            size="small"
+                            aria-label="small outlined button group"
                           >
-                            -
-                          </Button>
-                        )}
-                      </ButtonGroup>
-                    </Grid>
-                    <Grid item>
-                      <Typography>
-                        INR: {product.price * product.quantity}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src={product.image}
-                    variant="square"
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={product.title}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        INR: {product.price}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-              <Divider variant="inset" component="li" />
+                            <Button
+                              onClick={() => {
+                                setProductQuantity(1, product.productId);
+                                setCount((count) => count + 1);
+                              }}
+                            >
+                              +
+                            </Button>
+
+                            <Button disabled>{product.quantity}</Button>
+                            <Button
+                              onClick={() => {
+                                setProductQuantity(-1, product.productId);
+                                setCount((count) => count - 1);
+                              }}
+                            >
+                              -
+                            </Button>
+                          </ButtonGroup>
+                        </Grid>
+                        <Grid item>
+                          <Typography>
+                            INR: {product.price * product.quantity}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    }
+                  >
+                    <ListItemAvatar>
+                      <img
+                        height="20px"
+                        width="20px"
+                        src={product.image}
+                        onerror="this.src = '../../_assets/images/alt.png'"
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={product.title}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            INR: {product.price}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+              )}
             </>
           ))}
         </List>

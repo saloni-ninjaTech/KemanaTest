@@ -8,7 +8,11 @@ import { AppContext } from "./context";
 
 function App(props) {
   const [showCart, setShowCart] = useState(false);
-  const [count, setCount] = useState(props.cartList.products.length);
+  const [count, setCount] = useState(
+    props.cartList.products.reduce((acc, obj) => {
+      return acc + obj.quantity;
+    }, 0)
+  );
 
   return (
     <div className="App">
