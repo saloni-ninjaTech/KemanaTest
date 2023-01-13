@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
+import { AppContext } from "./context";
 
 export default function AddToCartButton(props) {
-  const { product, cartList, setShowCart } = props;
+  const { cartList, setShowCart } = useContext(AppContext);
+  const { product } = props;
   const AddToCart = (product) => {
     let newProduct = {
       productId: product.id,

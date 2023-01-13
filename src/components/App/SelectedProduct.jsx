@@ -9,9 +9,11 @@ import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import AddToCartButton from "./AddToCartButton";
+import { AppContext } from "./context";
 
 export default function SelectedProduct(props) {
-  const { onClose, selectedValue, open, productList } = props;
+  const { productList } = React.useContext(AppContext);
+  const { onClose, selectedValue, open } = props;
 
   // filtering particular product
   const product = productList.filter((prod) => prod.id === selectedValue);
@@ -24,7 +26,7 @@ export default function SelectedProduct(props) {
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Product View</DialogTitle>
       {product.map((prod) => (
-        <Paper>
+        <Paper key={prod.id}>
           <Card>
             <CardMedia
               component="img"
@@ -42,7 +44,7 @@ export default function SelectedProduct(props) {
               </Typography>
             </CardContent>
             <CardActions>
-              <AddToCartButton product={product} {...props} />
+              <AddToCartButton product={prod} />
             </CardActions>
           </Card>
         </Paper>

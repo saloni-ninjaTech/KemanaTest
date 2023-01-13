@@ -7,11 +7,12 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
 import SelectedProduct from "./SelectedProduct";
 import AddToCartButton from "./AddToCartButton";
+import { AppContext } from "./context";
 
-export default function ProductsView(props) {
-  const { productList } = props;
+export default function ProductsView() {
+  const { productList } = React.useContext(AppContext);
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(0); // selected product id value
+  const [selectedValue, setSelectedValue] = React.useState(""); // selected product id value
   // dialog open
   const handleClickOpen = (id) => {
     setOpen(true);
@@ -46,7 +47,7 @@ export default function ProductsView(props) {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <AddToCartButton product={product} {...props} />
+              <AddToCartButton product={product} />
             </CardActions>
           </Card>
         </Grid>
@@ -55,7 +56,6 @@ export default function ProductsView(props) {
         selectedValue={selectedValue}
         open={open}
         onClose={handleClose}
-        {...props}
       />
     </Grid>
   );

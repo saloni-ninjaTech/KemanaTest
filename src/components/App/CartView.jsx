@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -9,9 +9,10 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import { AppContext } from "./context";
 
-export default function CartView(props) {
-  const { cartList, setShowCart } = props;
+export default function CartView() {
+  const { cartList, setShowCart } = useContext(AppContext);
   const setProductQuantity = (num, prodId) => {
     const foundIndex = cartList.products.findIndex(
       (x) => x.productId === prodId
@@ -25,6 +26,7 @@ export default function CartView(props) {
         quantity: foundProduct.quantity + num, // num id +1 and -1 as per increment and decrement call
       };
     }
+    console.log("cart:", cartList);
   };
 
   return (
