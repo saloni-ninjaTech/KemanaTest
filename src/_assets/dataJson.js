@@ -7,7 +7,7 @@ export const productList = [
     brand: "Apple",
     category: "smartphones",
     image:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.reliancedigital.in%2Fapple-iphone-14-128-gb-blue%2Fp%2F493177752&psig=AOvVaw2J5xbczxZMmKCtjI91cWw6&ust=1673589480988000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCPC14eWswfwCFQAAAAAdAAAAABAI",
+      "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-13-pro-max-5.jpg",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ export const productList = [
     brand: "Samsung",
     category: "smartphones",
     image:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.samsung.com%2Fin%2Fsmartphones%2F&psig=AOvVaw3X0h4e0tr2vTB-DEb_ba-x&ust=1673589549071000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCIibroatwfwCFQAAAAAdAAAAABAH",
+      "https://cdn.pixabay.com/photo/2016/03/27/19/43/samsung-1283938_960_720.jpg",
   },
   {
     id: 3,
@@ -26,8 +26,7 @@ export const productList = [
     price: 200,
     brand: "Apple",
     category: "tablet",
-    image:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fin%2Fshop%2Fbuy-ipad%2Fipad%2F64gb-blue-wifi&psig=AOvVaw0pi40e8S8K0gQf5Ifm44wY&ust=1673589586750000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCJD2tJqtwfwCFQAAAAAdAAAAABAD",
+    image: "https://fdn2.gsmarena.com/vv/pics/apple/apple-ipad-air-1.jpg",
   },
   {
     id: 4,
@@ -37,7 +36,7 @@ export const productList = [
     brand: "Samsung",
     category: "tablet",
     image:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gadgetsnow.com%2Ftablets%2FSamsung-Galaxy-Tab-A-70&psig=AOvVaw2EOrWkGJBw0-Ki6ykePTGf&ust=1673589617145000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCIjZ4KatwfwCFQAAAAAdAAAAABAG",
+      "https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-tab-a-101-2019-1.jpg",
   },
   {
     id: 5,
@@ -46,8 +45,7 @@ export const productList = [
     price: 100,
     brand: "Noise",
     category: "watch",
-    image:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.in%2FNoise-ColorFit-Display-Monitoring-Smartwatches%2Fdp%2FB09PNKXSKF&psig=AOvVaw39htC2vXqE4C4I_BBlLhSa&ust=1673589653334000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLDklLitwfwCFQAAAAAdAAAAABAN",
+    image: "https://cdn1.smartprix.com/rx-iRBmKaXrm-w1200-h1200/RBmKaXrm.jpg",
   },
 ];
 
