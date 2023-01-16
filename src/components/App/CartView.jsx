@@ -13,7 +13,8 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import { AppContext } from "./context";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import AltImg from "../../_assets/images/alt.jpg";
 
 export default function CartView() {
   const { setShowCart, setCount } = useContext(AppContext);
@@ -49,6 +50,20 @@ export default function CartView() {
     }
   }, [cartState]);
 
+  const ContinueButton = () => {
+    return (
+      <Button
+        color="success"
+        variant="outlined"
+        onClick={() => {
+          setShowCart(false);
+          window.location.reload();
+        }}
+      >
+        Continue Shopping!
+      </Button>
+    );
+  };
   if (!!cartState === false)
     return (
       <Grid container spacing={3}>
@@ -56,16 +71,7 @@ export default function CartView() {
           <Alert severity="warning">Nothing Added to Cart</Alert>
         </Grid>
         <Grid item xs={12}>
-          <Button
-            color="success"
-            variant="outlined"
-            onClick={() => {
-              setShowCart(false);
-              window.location.reload();
-            }}
-          >
-            Continue Shopping!
-          </Button>
+          <ContinueButton />
         </Grid>
       </Grid>
     );
@@ -84,7 +90,6 @@ export default function CartView() {
       };
       setCartState({ ...cartState });
       sessionStorage.setItem("cartList", JSON.stringify(cartState));
-      console.log("sess get:", JSON.parse(sessionStorage.getItem("cartList")));
       if (cartState?.products[0].quantity === 0) {
         sessionStorage.removeItem("cartList");
         setCartState(null);
@@ -143,7 +148,12 @@ export default function CartView() {
                                           +e.target.value
                                       );
                                     }}
-                                    sx={{ width: "70px" }}
+                                    sx={{
+                                      width: "70px",
+                                    }}
+                                    inputProps={{
+                                      style: { textAlign: "center" },
+                                    }}
                                     value={product.quantity}
                                   />
                                   <Button
@@ -169,11 +179,17 @@ export default function CartView() {
                           }
                         >
                           <ListItemAvatar>
-                            <img
-                              height="20px"
-                              width="20px"
-                              src={product.image}
-                              onerror="this.src = '../../_assets/images/alt.jpg'"
+                            <Box
+                              component="img"
+                              sx={{
+                                width: "50px",
+                                height: "50px",
+                                margin: "auto",
+                              }}
+                              src={product.image || ""}
+                              onError={(e) => {
+                                e.target.src = AltImg;
+                              }}
                             />
                           </ListItemAvatar>
                           <ListItemText
@@ -274,12 +290,15 @@ export default function CartView() {
       )}
     </Grid>
   ) : (
-    <Grid container justifyContent="center" alignItems="center">
-      <Grid item>
+    <Grid container justifyContent="center" alignItems="center" spacing={2}>
+      <Grid item xs={12}>
         <Typography>
           <CheckCircleOutlineRoundedIcon color="success" fontSize="large" />
           Order Placed!
         </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <ContinueButton />
       </Grid>
     </Grid>
   );

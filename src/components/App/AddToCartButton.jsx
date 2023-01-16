@@ -11,6 +11,7 @@ const AddToCart = debounce((product, cartState, setCount, setIsOpen) => {
     title: product.title,
     price: product.price,
     quantity: 1,
+    image: product.image,
   };
 
   // checking whether product already exist in cart
@@ -33,7 +34,7 @@ const AddToCart = debounce((product, cartState, setCount, setIsOpen) => {
   setCount((count) => count + 1);
   setIsOpen(true);
   sessionStorage.setItem("cartList", JSON.stringify(cartState));
-}, 1000);
+}, 500);
 
 export default function AddToCartButton(props) {
   const { cartList, setCount } = useContext(AppContext);
