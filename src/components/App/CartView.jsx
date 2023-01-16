@@ -13,6 +13,7 @@ import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import { AppContext } from "./context";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import { TextField } from "@mui/material";
 
 export default function CartView() {
   const { setShowCart, setCount } = useContext(AppContext);
@@ -69,7 +70,7 @@ export default function CartView() {
       </Grid>
     );
 
-  const setProductQuantity = (num, prodId) => {
+  const setProductQuantity = (num, prodId, isIncDec) => {
     const foundIndex = cartState.products.findIndex(
       (x) => x.productId === prodId
     );
@@ -79,14 +80,14 @@ export default function CartView() {
     if (foundIndex >= 0) {
       cartState.products[foundIndex] = {
         ...foundProduct,
-        quantity: foundProduct.quantity + num, // num id +1 and -1 as per increment and decrement call
+        quantity: isIncDec ? foundProduct.quantity + +num : +num, // num id +1 and -1 as per increment and decrement call
       };
       setCartState({ ...cartState });
+      sessionStorage.setItem("cartList", JSON.stringify(cartState));
+      console.log("sess get:", JSON.parse(sessionStorage.getItem("cartList")));
       if (cartState?.products[0].quantity === 0) {
         sessionStorage.removeItem("cartList");
         setCartState(null);
-      } else {
-        sessionStorage.setItem("cartList", JSON.stringify(cartState));
       }
     }
   };
@@ -117,17 +118,41 @@ export default function CartView() {
                                 >
                                   <Button
                                     onClick={() => {
-                                      setProductQuantity(1, product.productId);
+                                      setProductQuantity(
+                                        1,
+                                        product.productId,
+                                        true
+                                      );
                                       setCount((count) => count + 1);
                                     }}
                                   >
                                     +
                                   </Button>
 
-                                  <Button disabled>{product.quantity}</Button>
+                                  <TextField
+                                    onChange={(e) => {
+                                      setProductQuantity(
+                                        e.target.value,
+                                        product.productId,
+                                        false
+                                      );
+                                      setCount(
+                                        (count) =>
+                                          count -
+                                          product.quantity +
+                                          +e.target.value
+                                      );
+                                    }}
+                                    sx={{ width: "70px" }}
+                                    value={product.quantity}
+                                  />
                                   <Button
                                     onClick={() => {
-                                      setProductQuantity(-1, product.productId);
+                                      setProductQuantity(
+                                        -1,
+                                        product.productId,
+                                        true
+                                      );
                                       setCount((count) => count - 1);
                                     }}
                                   >

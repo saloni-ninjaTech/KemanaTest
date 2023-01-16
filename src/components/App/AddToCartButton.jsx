@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { AppContext } from "./context";
 
-const AddToCart = debounce((product, cartList, setCount, setIsOpen) => {
+const AddToCart = debounce((product, cartState, setCount, setIsOpen) => {
   let newProduct = {
     productId: product.id,
     title: product.title,
@@ -14,17 +14,17 @@ const AddToCart = debounce((product, cartList, setCount, setIsOpen) => {
   };
 
   // checking whether product already exist in cart
-  const foundIndex = cartList.products.findIndex(
+  const foundIndex = cartState.products.findIndex(
     (x) => x.productId === product.id
   );
-  const foundProduct = cartList.products[foundIndex];
+  const foundProduct = cartState.products[foundIndex];
 
   if (foundIndex < 0) {
     // if product don't exist then adding as new product
-    cartList.products.push(newProduct);
+    cartState.products.push(newProduct);
   } else {
     // if product exist then updating qty
-    cartList.products[foundIndex] = {
+    cartState.products[foundIndex] = {
       ...foundProduct,
       quantity: foundProduct.quantity + 1,
     };
@@ -32,7 +32,7 @@ const AddToCart = debounce((product, cartList, setCount, setIsOpen) => {
 
   setCount((count) => count + 1);
   setIsOpen(true);
-  sessionStorage.setItem("cartList", JSON.stringify(cartList));
+  sessionStorage.setItem("cartList", JSON.stringify(cartState));
 }, 1000);
 
 export default function AddToCartButton(props) {
@@ -40,8 +40,15 @@ export default function AddToCartButton(props) {
   const { product } = props;
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = (product, cartList) => {
-    AddToCart(product, cartList, setCount, setIsOpen);
+  const [cartState, setCartState] = useState(cartList);
+  useEffect(() => {
+    setCartState(JSON.parse(sessionStorage.getItem("cartList")) || cartList);
+  }, [cartList]);
+  const handleClick = (product, cartState) => {
+    console.log("carrt:", cartState);
+    if (cartState) {
+      AddToCart(product, cartState, setCount, setIsOpen);
+    }
   };
   return (
     <>
@@ -50,7 +57,7 @@ export default function AddToCartButton(props) {
         size="small"
         color="primary"
         onClick={() => {
-          handleClick(product, cartList);
+          handleClick(product, cartState);
         }}
       >
         Add to Cart
