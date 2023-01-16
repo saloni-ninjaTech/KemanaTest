@@ -67,18 +67,5 @@ export const categoryList = [
 ];
 
 export const cartList = {
-  products: [
-    {
-      productId: 1,
-      title: "iPhone 9",
-      price: 549,
-      quantity: 3,
-    },
-    {
-      productId: 4,
-      title: "Samsung Tablet",
-      price: 150,
-      quantity: 2,
-    },
-  ],
+  products: [],
 };

@@ -8,7 +8,7 @@ import { CardActionArea, CardActions } from "@mui/material";
 import SelectedProduct from "./SelectedProduct";
 import AddToCartButton from "./AddToCartButton";
 import { AppContext } from "./context";
-import AltImg from "../../_assets/images/alt.png";
+import AltImg from "../../_assets/images/alt.jpg";
 
 export default function ProductsView() {
   const { productList } = React.useContext(AppContext);
@@ -29,11 +29,11 @@ export default function ProductsView() {
     <Grid container spacing={2}>
       {productList.map((product) => (
         <Grid item xs={3} key={product.id}>
-          <Card>
+          <Card sx={{ alignContent: "center" }}>
             <CardActionArea onClick={() => handleClickOpen(product.id)}>
               <CardMedia
                 component="img"
-                height="140px"
+                sx={{ width: "150px", height: "150px", margin: "auto" }}
                 image={product.image}
                 onError={(e) => {
                   e.target.src = AltImg;
