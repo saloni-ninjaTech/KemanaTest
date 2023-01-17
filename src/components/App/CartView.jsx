@@ -64,6 +64,7 @@ export default function CartView() {
       </Button>
     );
   };
+
   if (!!cartState === false)
     return (
       <Grid container spacing={3}>
@@ -90,7 +91,8 @@ export default function CartView() {
       };
       setCartState({ ...cartState });
       sessionStorage.setItem("cartList", JSON.stringify(cartState));
-      if (cartState?.products[0].quantity === 0) {
+      let ind = cartState.products.findIndex((prod) => prod.quantity > 0);
+      if (ind === -1) {
         sessionStorage.removeItem("cartList");
         setCartState(null);
       }
